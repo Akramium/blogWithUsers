@@ -6,7 +6,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import relationship
 from flask_login import UserMixin, login_user, LoginManager, login_required, current_user, logout_user
-from forms import CreatePostForm, RegisterForm
+from forms import CreatePostForm, RegisterForm, LoginForm
 from flask_gravatar import Gravatar
 
 app = Flask(__name__)
@@ -33,7 +33,7 @@ class BlogPost(db.Model):
     img_url = db.Column(db.String(250), nullable=False)
 
 
-class User(db.Model):
+class User(UserMixin, db.Model):
     __tablename__ = "users"
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(250))
@@ -41,8 +41,14 @@ class User(db.Model):
     password = db.Column(db.String(250))
 
 
-db.create_all()
+# db.create_all()
+login_manager = LoginManager()
+login_manager.init_app(app)
 
+
+@login_manager.user_loader
+def load_user(user_id):
+    return db.session.query(User).get(user_id)
 
 @app.route('/')
 def get_all_posts():
@@ -52,11 +58,15 @@ def get_all_posts():
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
-    form = RegisterForm()
-    if form.validate_on_submit():
-        email = form.email.data
-        username = form.username.data
-        password = form.password.data
+    register_form = RegisterForm()
+    login_form = LoginForm()
+    if register_form.validate_on_submit():
+        email = register_form.email.data
+        if db.session.query(User).filter_by(email=email).first():
+            flash("You've already signed up with that email, log in instead!")
+            return redirect(url_for('login'))
+        username = register_form.username.data
+        password = register_form.password.data
         user = User(
             username=username,
             email=email,
@@ -64,17 +74,34 @@ def register():
         )
         db.session.add(user)
         db.session.commit()
+        login_user(user)
         return redirect(url_for('get_all_posts'))
-    return render_template("register.html", form=form)
+    return render_template("register.html", form=register_form)
 
 
-@app.route('/login')
+@app.route('/login', methods=['GET', 'POST'])
 def login():
-    return render_template("login.html")
+    form = LoginForm()
+    if form.validate_on_submit():
+        email = form.email.data
+        password = form.password.data
+        user = db.session.query(User).filter_by(email=email).first()
+        if user:
+            if user.password == password:
+                login_user(user)
+                print("Login Successfully")
+            else:
+                flash("Password is incorrect!")
+                return redirect(url_for('login'))
+        else:
+            flash("Email does not exist!")
+            return redirect(url_for('login'))
+    return render_template("login.html", form=form)
 
 
 @app.route('/logout')
 def logout():
+    logout_user()
     return redirect(url_for('get_all_posts'))
 
 
