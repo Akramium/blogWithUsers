@@ -33,7 +33,15 @@ class BlogPost(db.Model):
     img_url = db.Column(db.String(250), nullable=False)
 
 
-# db.create_all()
+class User(db.Model):
+    __tablename__ = "users"
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(250))
+    email = db.Column(db.String(250))
+    password = db.Column(db.String(250))
+
+
+db.create_all()
 
 
 @app.route('/')
@@ -49,9 +57,14 @@ def register():
         email = form.email.data
         username = form.username.data
         password = form.password.data
-        print(email)
-        print(username)
-        print(password)
+        user = User(
+            username=username,
+            email=email,
+            password=password,
+        )
+        db.session.add(user)
+        db.session.commit()
+        return redirect(url_for('get_all_posts'))
     return render_template("register.html", form=form)
 
 
