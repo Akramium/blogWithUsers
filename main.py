@@ -84,7 +84,7 @@ def get_all_posts():
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     register_form = RegisterForm()
-    login_form = LoginForm()
+    # login_form = LoginForm()
     if register_form.validate_on_submit():
         email = register_form.email.data
         if db.session.query(User).filter_by(email=email).first():
