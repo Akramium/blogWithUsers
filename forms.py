@@ -23,3 +23,7 @@ class LoginForm(FlaskForm):
     email = StringField("Email Address", validators=[DataRequired(), Email()])
     password = PasswordField("Password", validators=[DataRequired()])
     submit = SubmitField("Let me in!")
+
+# create a comment form
+class CommentForm(FlaskForm):
+    pass
