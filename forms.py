@@ -19,11 +19,16 @@ class RegisterForm(FlaskForm):
     password = PasswordField("Password", validators=[DataRequired()])
     submit = SubmitField("Register")
 
+
 class LoginForm(FlaskForm):
     email = StringField("Email Address", validators=[DataRequired(), Email()])
     password = PasswordField("Password", validators=[DataRequired()])
     submit = SubmitField("Let me in!")
 
+
 # create a comment form
 class CommentForm(FlaskForm):
+    # TODO: Create a CommentForm in the form.py file it will only contain a single CKEditorField for users to write their comments.
+    # TODO: Hint: You might need to check the documentation or day 67 to see how we implement the CKEditor.
+    # TODO:
     pass
