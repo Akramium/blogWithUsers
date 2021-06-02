@@ -28,7 +28,12 @@ class LoginForm(FlaskForm):
 
 # create a comment form
 class CommentForm(FlaskForm):
-    # TODO: Create a CommentForm in the form.py file it will only contain a single CKEditorField for users to write their comments.
+    # TODO: 1 - Create a CommentForm in the form.py file it will only contain a single CKEditorField for users to write their comments.
     # TODO: Hint: You might need to check the documentation or day 67 to see how we implement the CKEditor.
-    # TODO:
+    # TODO: 2- Create a Table called Comment where the tablename is "comments". It should contain an id and a text property which will be the primary key and the text entered into the CKEditor.
+    # TODO: 3- Establish a One to Many relationship Between the User Table (Parent) and the Comment table (Child). Where One User is linked to Many Comment objects.
+    # TODO: 4- Establish a One to Many relationship between each BlogPost object (Parent) and Comment object (Child). Where each BlogPost can have many associated Comment objects.
+    # TODO: 5. At this point, with a new Table added, it's a good idea to delete the existing blog.db entirely and to use the line db.create_all() to create all the tables from scratch.
+    # This means you should create a new admin user (id == 1), a new blog post and another user who will make some comments.
+
     pass
