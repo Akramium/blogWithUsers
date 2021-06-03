@@ -28,6 +28,7 @@ class LoginForm(FlaskForm):
 
 # create a comment form
 class CommentForm(FlaskForm):
+    # I will work on it this weekend
     # TODO: 1 - Create a CommentForm in the form.py file it will only contain a single CKEditorField for users to write their comments.
     # TODO: Hint: You might need to check the documentation or day 67 to see how we implement the CKEditor.
     # TODO: 2- Create a Table called Comment where the tablename is "comments". It should contain an id and a text property which will be the primary key and the text entered into the CKEditor.
