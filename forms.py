@@ -38,4 +38,6 @@ class CommentForm(FlaskForm):
     # This means you should create a new admin user (id == 1), a new blog post and another user who will make some comments.
     # TODO: 6. Log in as your John Doe user (or any user that is not the primary user) and make a comment on a blog post. In order for this to work, you will need to update the /post/<int:post_id> route. Make sure that only authenticated (logged-in) users can save their comment. Otherwise, they should see a flash message telling them to log in and redirect them to the /login route.
     # TODO: 7. Update the code in post.html to display all the comments associated with the blog post.
+    # later in this week
+
     pass
